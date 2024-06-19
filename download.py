@@ -32,11 +32,20 @@ def _mediasite_video_to_audio(video_url):
         audio_url = video_url.replace(f"video={video_format}", generic_audio_manifest)
         print(f"Coerced into audio URL: {audio_url}")
         return audio_url
+    
+    # Check if the URL is an audio URL
+    pattern = re.compile(r"manifest\(audio=(.*?),format=m3u8-aapl-isoff\)")
+    match = pattern.search(video_url)
+    if match:
+        return video_url
+    
+    raise ValueError("Invalid URL. Must be a mediasite video or audio URL")
 
 
-def _parse_url(video_url):
+def _parse_url(video_url: str):
     video_url = video_url.strip()
     # TODO maybe replace \ with empty string?
+    print(video_url)
 
     if video_url.startswith("https://ondem-a.us-a.mediasite.com/MediasiteDeliver/"):
         return _mediasite_video_to_audio(video_url)
@@ -156,11 +165,14 @@ def main():
                 parts = line.split(",https")
                 if len(parts) == 1:
                     url_name_map.append((parts[0], None))
-                else:
+                elif len(parts) == 2:
                     url_name_map.append(("https" + parts[1], parts[0]))
+                else:
+                    print(f"Invalid line: {line}")
 
         for url, name in url_name_map:
-            download_video(video_url=url, video_name=name)
+            print(f"Downloading {url} as {name}")
+            download_video(video_url=url.strip(), video_name=name.strip())
 
 
 if __name__ == "__main__":

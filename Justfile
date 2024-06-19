@@ -9,6 +9,7 @@ set shell := ["powershell", "-Command"]
 
 
 activate:
+    powershell -ExecutionPolicy ByPass -NoExit -Command "./.venv/Scripts/Activate.ps1"
     activate
     
 

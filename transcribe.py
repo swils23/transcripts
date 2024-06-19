@@ -6,8 +6,6 @@ import re
 
 import argparse
 
-VERBOSE = True
-
 TRANSCRIPT_OUTPUT_DIR = "data/transcripts/"
 
 def transcribe(video_path, fast=False):
@@ -17,11 +15,11 @@ def transcribe(video_path, fast=False):
 
     if os.path.exists(TRANSCRIPT_OUTPUT_DIR) == False:
         os.mkdir(TRANSCRIPT_OUTPUT_DIR)
-
+    output_path = TRANSCRIPT_OUTPUT_DIR + re.sub(r"\.\w+$", ".txt", video_path).replace(
+        "data/videos/", ""
+    )
     # if transcript already
-    if os.path.exists(
-        TRANSCRIPT_OUTPUT_DIR + re.sub(r"\.\w+$", ".txt", video_path).replace("video/", "")
-    ):
+    if os.path.exists(output_path):
         x = input("Transcript already exists. Overwrite? (Y/n): ")
         if x.lower() != "y":
             return
@@ -36,18 +34,14 @@ def transcribe(video_path, fast=False):
     model = whisper.load_model(model_size, device=device)
     result = model.transcribe(video_path)
 
-    # Print the transcript
-    # if VERBOSE:
-    # print(result["text"])
 
     # Save the transcript to a file. yank the extension off the video path and replace it with .txt
     output_path = TRANSCRIPT_OUTPUT_DIR + re.sub(r"\.\w+$", ".txt", video_path).replace(
         "data/videos/", ""
     )
-    with open(output_path, "w", encoding="utf-16") as f:
-        if VERBOSE:
-            print("Saving transcript to ", output_path)
-        f.write(result["text"])
+    result_utf8 = result["text"].encode("utf-8")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(result_utf8.decode("utf-8"))
 
 
 def main():
