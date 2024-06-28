@@ -16,8 +16,6 @@ cd transcripts
 just initial_setup
 ```
 
----
-
 #### Ubuntu
 
 ```sh
@@ -33,3 +31,22 @@ pip install uv
 uv pip install -r requirements.txt
 uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
+
+#### Mac
+```sh
+mkvirtualenv transcripts
+workon transcripts
+
+mkdir ./data && mkdir ./data/videos
+
+pip install -r requirements.txt
+pip install torch torchvision torchaudio
+```
+---
+
+# Usage
+
+```sh
+python download.py 
+```
+
