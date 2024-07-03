@@ -2,7 +2,7 @@
 $root = (Get-Item -Path ".\").FullName
 
 # if we are not in project root, error
-if (-Not($root -like "*\mediasite-dl")) {
+if (-Not($root -like "*\transcripts")) {
     Write-Host "Please run this script from the root of the project"
     exit
 }
