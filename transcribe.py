@@ -6,6 +6,11 @@ import re
 
 import argparse
 
+import warnings
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
+
 TRANSCRIPT_OUTPUT_DIR = "data/transcripts/"
 
 def transcribe(video_path, fast=False):
