@@ -10,11 +10,11 @@ if not os.path.exists("requirements.txt"):
 packages_to_remove_startswith = ["torch"]
 
 # get encoding of the file
-with open("requirements.txt", "r", encoding="utf-16") as f:
+with open("requirements.txt", "r") as f:
     requirements = f.readlines()
 
 # Write the new requirements to the file
-with open("requirements.txt", "w", encoding="utf-16") as f:
+with open("requirements.txt", "w") as f:
     for requirement in requirements:
         if any(
             requirement.startswith(package) for package in packages_to_remove_startswith

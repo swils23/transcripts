@@ -172,6 +172,7 @@ def main():
 
         for url, name in url_name_map:
             print(f"Downloading {url} as {name}")
+            name = name if name is not None else url.split("/")[-1].split("?")[0]
             download_video(video_url=url.strip(), video_name=name.strip())
 
 
