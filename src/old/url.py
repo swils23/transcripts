@@ -11,11 +11,11 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 def get_audio_url(url, username, password):
     options = webdriver.ChromeOptions()
-    options.set_capability(
-                        "goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
-                    )
-    options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3')
-    options.add_argument('--auto-open-devtools-for-tabs')
+    options.set_capability("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"})
+    options.add_argument(
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+    )
+    options.add_argument("--auto-open-devtools-for-tabs")
     # mute audio
     options.add_argument("--mute-audio")
 
@@ -31,23 +31,22 @@ def get_audio_url(url, username, password):
         driver.find_element(By.ID, "password").send_keys(password)
         driver.find_element(By.NAME, "submit").click()
 
-    # eventually we'll end up with a button on the video 
+    # eventually we'll end up with a button on the video
     driver.find_element(By.CLASS_NAME, "mediasite-player__playcover-play-button").click()
 
     # Capture network requests (this part needs DevTools Protocol or additional tools)
     time.sleep(5)  # Wait for requests to complete
     # Retrieve network logs
-    logs = driver.get_log('performance')
+    logs = driver.get_log("performance")
     driver.close()
 
     # Filter for manifest requests
-    manifest_requests = [entry for entry in logs if 'manifest' in entry['message']]
+    manifest_requests = [entry for entry in logs if "manifest" in entry["message"]]
 
     for request in manifest_requests:
         print(request)
         with open("manifest.txt", "w") as f:
             f.write(request)
-
 
     time.sleep(600)
 
@@ -66,6 +65,7 @@ def get_creds():
             password = f.readline().strip()
 
     return username, password
+
 
 def main():
     if len(sys.argv) < 2:

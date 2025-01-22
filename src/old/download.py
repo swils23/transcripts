@@ -15,9 +15,7 @@ def _mediasite_video_to_audio(video_url):
     """
     Converts mediasite video URL to audio URL
     """
-    generic_audio_manifest = (
-        "audio=mp4a_eng_193657,format=m3u8-aapl-isoff"  # TODO this may not be universal
-    )
+    generic_audio_manifest = "audio=mp4a_eng_193657,format=m3u8-aapl-isoff"  # TODO this may not be universal
     if not video_url.startswith("https://ondem-a.us-a.mediasite.com/MediasiteDeliver/"):
         raise NotImplementedError("This function only works with mediasite URLs")
 
@@ -32,13 +30,13 @@ def _mediasite_video_to_audio(video_url):
         audio_url = video_url.replace(f"video={video_format}", generic_audio_manifest)
         print(f"Coerced into audio URL: {audio_url}")
         return audio_url
-    
+
     # Check if the URL is an audio URL
     pattern = re.compile(r"manifest\(audio=(.*?),format=m3u8-aapl-isoff\)")
     match = pattern.search(video_url)
     if match:
         return video_url
-    
+
     raise ValueError("Invalid URL. Must be a mediasite video or audio URL")
 
 
@@ -141,12 +139,8 @@ def main():
 
     parser.add_argument("-u", "--url", type=str, help="URL of the video to download")
     parser.add_argument("-n", "--name", type=str, help="Name of the video to download")
-    parser.add_argument(
-        "-b", "--bulk", action="store_true", help="File containing URLs of videos to download"
-    )
-    parser.add_argument(
-        "--file", type=str, help="File containing URLs of videos to download", dest="file"
-    )
+    parser.add_argument("-b", "--bulk", action="store_true", help="File containing URLs of videos to download")
+    parser.add_argument("--file", type=str, help="File containing URLs of videos to download", dest="file")
 
     args = parser.parse_args()
 
