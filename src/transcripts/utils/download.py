@@ -128,4 +128,3 @@ class Video:
         self.video.write(out)
         self.video.seek(0)
         self.is_downloaded = True
-        print(f"Downloaded audio to buffer, size: {self.video.getbuffer().nbytes} bytes")
