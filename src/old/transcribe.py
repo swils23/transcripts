@@ -76,9 +76,6 @@ def main():
         for video in os.listdir("data/videos/"):
             if video.endswith(".mp4"):
                 transcribe("data/videos/" + video, fast)
-            
-
-
 
 if __name__ == "__main__":
     main()
