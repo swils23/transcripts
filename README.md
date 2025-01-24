@@ -1,52 +1,62 @@
-# transcripts
-
----
-
 # Installation
 
-#### Windows
-**Important**: Make sure you are using powershell, NOT cmd.
-```sh
-# Install Just
-winget install --id Casey.Just --exact
+Prerequisites:
+- [Python][1]
+- [UV][2]
 
-# Setup
+Clone the repository
+```bash
+# HTTPS
 git clone https://github.com/swils23/transcripts.git
+# SSH
+git clone git@github.com:swils23/transcripts.git
+```
+
+Navigate to the repository
+```bash
 cd transcripts
-just initial_setup
 ```
 
-#### Ubuntu
+Make virtual environment
+```bash
+uv venv
+```
 
-```sh
-wget -qO - 'https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub' | gpg --dearmor | sudo tee /usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg 1> /dev/null
-echo "deb [arch=all,$(dpkg --print-architecture) signed-by=/usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg] https://proget.makedeb.org prebuilt-mpr $(lsb_release -cs)" | sudo tee /etc/apt/sources.list.d/prebuilt-mpr.list
-sudo apt update
-sudo apt-get install just
+Activate virtual environment
+```bash
+.venv\Scripts\activate # Windows
+source .venv/bin/activate # Linux / MacOS
+```
 
-python -m venv .venv
-source .venv/bin/activate
-
-pip install uv
+Install requirements
+```bash
 uv pip install -r requirements.txt
-uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
-
-#### Mac
-```sh
-mkvirtualenv transcripts
-workon transcripts
-
-mkdir ./data && mkdir ./data/videos
-
-pip install -r requirements.txt
-pip install torch torchvision torchaudio
-```
----
 
 # Usage
 
-```sh
-python download.py 
+Activate virtual environment
+```bash
+# Windows --------------------------------  
+.venv\Scripts\activate
+# Linux / MacOS ----------------------------
+source .venv/bin/activate
 ```
+
+Run the script
+```bash
+python -m src.transcripts.main
+```
+
+⚠️ **IMPORTANT**: HOW TO GET THE RIGHT URL FOR MEDIASITE
+1. Go to the video - DON'T PRESS PLAY (if you do, refresh the page and try again)
+2. Open Developer Tools > Network
+3. NOW press play
+4. Filter the requests by `manifest(audio`
+5. Right click request > Copy > Copy URL 🎉
+
+
+
+[1]: https://www.python.org/downloads/
+[2]: https://docs.astral.sh/uv/#getting-started
 
