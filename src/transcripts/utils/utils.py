@@ -1,21 +1,30 @@
-from urllib.parse import urlparse
-from .download import Video
+import ffmpeg
+import torch
+import torch.backends.cuda
+import whisper
+import warnings
 
 
-def normalize_url(url: str) -> tuple[bool, str]:
+def transcribe(video_path: str) -> str:
+    # Use ffmpeg to load and convert audio to the format Whisper expects
+    warnings.filterwarnings("ignore")
     try:
-        url = url.strip()
-        url = urlparse(url).geturl()
-        # ensure http or https (default to https)
-        if not url.startswith("http://") and not url.startswith("https://"):
-            url = "https://" + url
-        return True, url
-    except Exception as e:
-        return False, f"Invalid URL: {url}"
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model = whisper.load_model(
+            "medium.en" if device.type == "cuda" else "small.en", device=device
+        )
+        result = model.transcribe(video_path)
+        transcript = result["text"]
+        return transcript
+
+    except ffmpeg.Error as e:
+        print("stdout:", e.stdout.decode("utf8"))
+        print("stderr:", e.stderr.decode("utf8"))
+        raise e
 
 
-def download_and_transcribe(url: str) -> str:
-    video = Video(url)
-    video.download()
-    video.transcribe()
-    return video.transcript
+def download(url: str, output: str):
+    video = ffmpeg.input(url)
+    audio = video.audio
+    out = ffmpeg.output(audio, output, format="mp4")
+    ffmpeg.run(out)

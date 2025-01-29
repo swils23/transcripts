@@ -1,6 +1,6 @@
-from .utils import download_and_transcribe, normalize_url
+from .utils import download, transcribe
 
 __all__ = [
-    "download_and_transcribe",
-    "normalize_url",
+    "download",
+    "transcribe",
 ]
